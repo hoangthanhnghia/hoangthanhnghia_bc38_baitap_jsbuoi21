@@ -1,5 +1,12 @@
 var staffList = [];
 
+var mode = "create";
+
+function submitForm(){
+    if ( mode === "create") createStaff();
+    else if (mode === "update") updateStaff();
+}
+
 function createStaff() {
     if (!validateForm()) return;
 
@@ -50,10 +57,16 @@ function renderStaffs() {
                     <td>${staffList[i].fullSalary()}</td>
                     <td>${staffList[i].classification()}</td>             
                     <td>${staffList[i].timeWorking}</td>
+
                     <td>
                   <button 
                      onclick="deleteStaff('${staffList[i].staffId}')"
                     class="btn btn-danger">Xoá</button>
+
+                    <button
+                    onclick="getUpdateStaff('${staffList[i].staffId}')"
+                    class="btn btn-info">Sửa</button>
+                    </td>                  
                 </tr>`
     };
     document.getElementById('tableDanhSach').innerHTML = html;
@@ -84,6 +97,30 @@ function deleteStaff(id) {
     renderStaffs();
 
     saveStaffList();
+}
+
+function getUpdateStaff(id) {
+    var index = findById(id);
+    if (index === -1) return alert('Id không tồn tại');
+
+    var staff = staffList[index];
+
+     document.getElementById('tknv').value = staff.staffId;
+     document.getElementById('name').value = staff.fullName;
+     document.getElementById('email').value = staff.email;
+     document.getElementById('password').value = staff.passWord;
+     document.getElementById('datepicker').value = staff.datepicker;
+     document.getElementById('luongCB').value = staff.basicSalary;
+     document.getElementById('chucvu').value = staff.position;
+     document.getElementById('gioLam').value = staff.timeWorking;
+
+     document.getElementById('tknv').disabled = true;
+
+     mode = "update";
+}
+
+function updateStaff() {
+    console.log('update');
 }
 
 // input: id => output : index
